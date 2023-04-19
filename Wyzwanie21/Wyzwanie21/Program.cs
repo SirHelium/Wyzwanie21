@@ -12,7 +12,7 @@ public class Program
         while (true)
         {
             Console.WriteLine("Wybierz opcję:");
-            Console.WriteLine("1 - Zapisywać dane pracownika do pliku\n" + 
+            Console.WriteLine("1 - Zapisywać dane pracownika do pliku\n" +
                 "2 - Zapisywać dane pracownika w pamięci programu\n" + "3 - Skończyć na tym\n");
             var userImput = Console.ReadLine();
 
@@ -42,6 +42,7 @@ public class Program
     private static void AddHoursToMemory()
     {
         var employee = CreateEmployeeInMemory();
+        employee.GoodWork += PraiseAnEmployee;
 
         bool finishCircle = false;
         while (!finishCircle)
@@ -52,21 +53,22 @@ public class Program
                 switch (type)
                 {
                     case 1:
-                        employee.AddWorkingHours(Console.ReadLine());
+                        employee.AddWorkingHours(WriteCountOfHours());
                         break;
                     case 2:
-                        employee.AddVacationHours(Console.ReadLine());
+                        employee.AddVacationHours(WriteCountOfHours());
                         break;
                     case 3:
-                        employee.AddSickHours(Console.ReadLine());
+                        employee.AddSickHours(WriteCountOfHours());
                         break;
                     case 4:
-                        employee.AddOvertimeHours(Console.ReadLine());
+                        employee.AddOvertimeHours(WriteCountOfHours());
                         break;
                     case 5:
                         finishCircle = true;
                         break;
                 }
+                Console.WriteLine();
             }
             catch (Exception exception)
             {
@@ -76,11 +78,50 @@ public class Program
         }
 
         var statistics = employee.GetStatistics();
+        Console.WriteLine($"Pracownik: {employee.Name} {employee.Surname}");
         statistics.PrintStatistics();
     }
     private static void AddHoursToFile()
     {
+        var employee = CreateEmployeeInFile();
+        employee.GoodWork += PraiseAnEmployee;
 
+        bool finishCircle = false;
+        while (!finishCircle)
+        {
+            try
+            {
+                var type = SelectType();
+                switch (type)
+                {
+                    case 1:
+                        employee.AddWorkingHours(WriteCountOfHours());
+                        break;
+                    case 2:
+                        employee.AddVacationHours(WriteCountOfHours());
+                        break;
+                    case 3:
+                        employee.AddSickHours(WriteCountOfHours());
+                        break;
+                    case 4:
+                        employee.AddOvertimeHours(WriteCountOfHours());
+                        break;
+                    case 5:
+                        finishCircle = true;
+                        break;
+                }
+                Console.WriteLine();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Błąd. {exception.Message}.");
+                Console.WriteLine();
+            }
+        }
+
+        var statistics = employee.GetStatistics();
+        Console.WriteLine($"Pracownik: {employee.Name} {employee.Surname}");
+        statistics.PrintStatistics();
     }
     private static EmployeeInMemory CreateEmployeeInMemory()
     {
@@ -101,14 +142,35 @@ public class Program
                 Console.WriteLine("Pola z imieniem i nazwiskiem pracownika nie mogą być puste");
             }
         }
-        
+
+    }
+    private static EmployeeInFile CreateEmployeeInFile()
+    {
+        while (true)
+        {
+            Console.WriteLine("Wprowadź imię pracownika");
+            var name = Console.ReadLine();
+            Console.WriteLine("Wprowadź nazwisko pracownika");
+            var surname = Console.ReadLine();
+
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(surname))
+            {
+                var employee = new EmployeeInFile(name, surname);
+                return employee;
+            }
+            else
+            {
+                Console.WriteLine("Pola z imieniem i nazwiskiem pracownika nie mogą być puste");
+            }
+        }
+
     }
     private static int SelectType()
     {
         Console.WriteLine("Wybierz opcję:");
         Console.WriteLine("1 - dodaj godziny pracujące\n" + "2 - dodaj godziny urlopowe\n" +
             "3 - dodaj godziny chorobowe\n" + "4 - dodaj nadgodziny\n" + "5 - obliczyć statystyki\n");
-        while (true) 
+        while (true)
         {
             var userImput = Console.ReadLine();
             if (int.TryParse(userImput, out int result))
@@ -128,5 +190,13 @@ public class Program
             }
         }
     }
-
+    private static string WriteCountOfHours()
+    {
+        Console.WriteLine("Wpisz ilość godzin:");
+        return Console.ReadLine();
+    }
+    private static void PraiseAnEmployee(object sender, EventArgs args)
+    {
+        Console.WriteLine($"Świetna robota!");
+    }
 }

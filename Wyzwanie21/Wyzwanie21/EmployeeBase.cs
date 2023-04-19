@@ -2,6 +2,8 @@
 {
     public abstract class EmployeeBase : IEmployee
     {
+        public delegate void GoodWorkDelegate(object sender, EventArgs args);
+        public abstract event GoodWorkDelegate GoodWork;
         public string Name { get; private set; }
         public string Surname { get; private set; }
 
@@ -22,6 +24,7 @@
             {
                 if (result > 0 && result <= 24)
                 {
+                    Console.WriteLine($"Dodano {result} godzin(y)");
                     return true;
                 }
                 else
@@ -34,6 +37,5 @@
                 throw new Exception("Wpisz liczbę całkowitą.");
             }
         }
-
     }
 }

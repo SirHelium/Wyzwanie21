@@ -20,7 +20,6 @@
                 return (float)(WorkingHours + OvertimeHours) / SumHours * 100;
             }
         }
-
         public Statistics()
         {
             OvertimeHours = 0;
@@ -28,8 +27,7 @@
             VacationHours = 0;
             WorkingHours = 0;
         }
-
-        public void AddHours(string hours)
+        public void AddHoursForStatistics(string hours)
         {
             switch (hours[0])
             {
