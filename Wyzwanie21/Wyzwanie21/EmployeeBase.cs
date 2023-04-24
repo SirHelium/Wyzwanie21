@@ -14,13 +14,20 @@
         }
 
         public abstract void AddOvertimeHours(string hours);
+
         public abstract void AddSickHours(string hours);
+
         public abstract void AddVacationHours(string hours);
+
         public abstract void AddWorkingHours(string hours);
+
         public abstract Statistics GetStatistics();
-        protected virtual bool CheckCorrectnessOfTheAddedHours(string hours)
+
+        protected bool CheckCorrectnessOfTheAddedHours(ref string hours)
         {
-            if (int.TryParse(hours, out int result))
+            hours = hours.Replace(".", ",");
+
+            if (float.TryParse(hours, out float result))
             {
                 if (result > 0 && result <= 24)
                 {
@@ -29,12 +36,12 @@
                 }
                 else
                 {
-                    throw new Exception("Niepoprawna ilość godzin, wpisz liczbę od 1 do 24.");
+                    throw new Exception("Niepoprawna ilość godzin, wpisz liczbę dodatnią do 24.");
                 }
             }
             else
             {
-                throw new Exception("Wpisz liczbę całkowitą.");
+                throw new Exception("Wpisz liczbę.");
             }
         }
     }

@@ -81,6 +81,7 @@ public class Program
         Console.WriteLine($"Pracownik: {employee.Name} {employee.Surname}");
         statistics.PrintStatistics();
     }
+
     private static void AddHoursToFile()
     {
         var employee = CreateEmployeeInFile();
@@ -123,6 +124,7 @@ public class Program
         Console.WriteLine($"Pracownik: {employee.Name} {employee.Surname}");
         statistics.PrintStatistics();
     }
+
     private static EmployeeInMemory CreateEmployeeInMemory()
     {
         while (true)
@@ -142,8 +144,8 @@ public class Program
                 Console.WriteLine("Pola z imieniem i nazwiskiem pracownika nie mogą być puste");
             }
         }
-
     }
+
     private static EmployeeInFile CreateEmployeeInFile()
     {
         while (true)
@@ -163,8 +165,8 @@ public class Program
                 Console.WriteLine("Pola z imieniem i nazwiskiem pracownika nie mogą być puste");
             }
         }
-
     }
+
     private static int SelectType()
     {
         Console.WriteLine("Wybierz opcję:");
@@ -190,11 +192,13 @@ public class Program
             }
         }
     }
+
     private static string WriteCountOfHours()
     {
         Console.WriteLine("Wpisz ilość godzin:");
         return Console.ReadLine();
     }
+
     private static void PraiseAnEmployee(object sender, EventArgs args)
     {
         Console.WriteLine($"Świetna robota!");

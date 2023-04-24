@@ -9,32 +9,37 @@ namespace Wyzwanie21
 
         public override event GoodWorkDelegate GoodWork;
         private string fullFileName;
+
         public EmployeeInFile(string name, string surname) : base(name, surname)
         {
             fullFileName = $"{name}_{surname}{fileName}";
-            using (var writer = File.AppendText(fullFileName))
+            if (!File.Exists(fullFileName))
             {
-                writer.WriteLine($"Pracownik: {name} {surname}");
+                using (var writer = File.AppendText(fullFileName))
+                {
+                    writer.WriteLine($"Pracownik: {name} {surname}");
+                }
             }
         }
 
         public override void AddOvertimeHours(string hours)
         {
-            if (CheckCorrectnessOfTheAddedHours(hours))
+            if (CheckCorrectnessOfTheAddedHours(ref hours))
             {
                 using (var writer = File.AppendText(fullFileName))
                 {
                     writer.WriteLine("o" + hours);
                 }
-                if (Convert.ToInt32(hours) >= 12 && GoodWork != null)
+                if (Convert.ToSingle(hours) >= 12 && GoodWork != null)
                 {
                     GoodWork(this, new EventArgs());
                 }
             }
         }
+
         public override void AddSickHours(string hours)
         {
-            if (CheckCorrectnessOfTheAddedHours(hours))
+            if (CheckCorrectnessOfTheAddedHours(ref hours))
             {
                 using (var writer = File.AppendText(fullFileName))
                 {
@@ -42,9 +47,10 @@ namespace Wyzwanie21
                 }
             }
         }
+
         public override void AddVacationHours(string hours)
         {
-            if (CheckCorrectnessOfTheAddedHours(hours))
+            if (CheckCorrectnessOfTheAddedHours(ref hours))
             {
                 using (var writer = File.AppendText(fullFileName))
                 {
@@ -52,20 +58,22 @@ namespace Wyzwanie21
                 }
             }
         }
+
         public override void AddWorkingHours(string hours)
         {
-            if (CheckCorrectnessOfTheAddedHours(hours))
+            if (CheckCorrectnessOfTheAddedHours(ref hours))
             {
                 using (var writer = File.AppendText(fullFileName))
                 {
                     writer.WriteLine("w" + hours);
                 }
-                if (Convert.ToInt32(hours) >= 12 && GoodWork != null)
+                if (Convert.ToSingle(hours) >= 12 && GoodWork != null)
                 {
                     GoodWork(this, new EventArgs());
                 }
             }
         }
+
         public override Statistics GetStatistics()
         {
             var statistics = new Statistics();
@@ -83,10 +91,6 @@ namespace Wyzwanie21
                 }
             }
             return statistics;
-        }
-        protected override bool CheckCorrectnessOfTheAddedHours(string hours)
-        {
-            return base.CheckCorrectnessOfTheAddedHours(hours);
         }
     }
 }
